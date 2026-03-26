@@ -1,0 +1,42 @@
+{% extends "layouts/main.html" %}
+
+{% set pageName = "When do you need to travel?" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {{ govukBackLink({ text: "Back", href: "javascript:history.back()" }) }}
+
+    {% if errors and errors["travel-date"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{ text: errors["travel-date"], href: "#travel-date" }]
+    }) }}
+    {% endif %}
+
+    <form method="post" novalidate>
+    {{ govukRadios({
+      name: "travel-date",
+      fieldset: {
+        legend: {
+          text: "When do you need to travel?",
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--l"
+        }
+      },
+      hint: { text: "We can only help if you need to travel within 3 weeks." },
+      errorMessage: errors["travel-date"] if errors else null,
+      value: data["travel-date"],
+      items: [
+        { value: "two-weeks", text: "In the next 2 weeks" },
+        { value: "three-weeks", text: "In 2 to 3 weeks" },
+        { value: "more-than-three-weeks", text: "In more than 3 weeks" }
+      ]
+    }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+
+  </div>
+</div>
+{% endblock %}
