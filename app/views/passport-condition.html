@@ -1,0 +1,41 @@
+{% extends "layouts/main.html" %}
+
+{% set pageName = "Is your passport damaged?" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {{ govukBackLink({ text: "Back", href: "javascript:history.back()" }) }}
+
+    {% if errors and errors["passport-condition"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{ text: errors["passport-condition"], href: "#passport-condition" }]
+    }) }}
+    {% endif %}
+
+    <form method="post" novalidate>
+    {{ govukRadios({
+      name: "passport-condition",
+      fieldset: {
+        legend: {
+          text: "Is your passport damaged?",
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--l"
+        }
+      },
+      hint: { text: "For example, the cover is coming off, pages are missing, or it has been damaged by water." },
+      errorMessage: errors["passport-condition"] if errors else null,
+      value: data["passport-condition"],
+      items: [
+        { value: "damaged", text: "Yes, it is damaged" },
+        { value: "not-damaged", text: "No, it is not damaged" }
+      ]
+    }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+
+  </div>
+</div>
+{% endblock %}
