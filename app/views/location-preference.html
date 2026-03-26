@@ -1,0 +1,46 @@
+{% extends "layouts/main.html" %}
+
+{% set pageName = "Where would you prefer to have your appointment?" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {{ govukBackLink({ text: "Back", href: "javascript:history.back()" }) }}
+
+    {% if errors and errors["location-preference"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{ text: errors["location-preference"], href: "#location-preference" }]
+    }) }}
+    {% endif %}
+
+    <form method="post" novalidate>
+    {{ govukRadios({
+      name: "location-preference",
+      fieldset: {
+        legend: {
+          text: "Where would you prefer to have your appointment?",
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--l"
+        }
+      },
+      hint: { text: "We will try to give you an appointment at your preferred location, but this may not always be possible." },
+      errorMessage: errors["location-preference"] if errors else null,
+      value: data["location-preference"],
+      items: [
+        { value: "london", text: "London" },
+        { value: "glasgow", text: "Glasgow" },
+        { value: "newport", text: "Newport" },
+        { value: "peterborough", text: "Peterborough" },
+        { value: "liverpool", text: "Liverpool" },
+        { value: "belfast", text: "Belfast" },
+        { value: "durham", text: "Durham" }
+      ]
+    }) }}
+      {{ govukButton({ text: "Continue" }) }}
+    </form>
+
+  </div>
+</div>
+{% endblock %}
